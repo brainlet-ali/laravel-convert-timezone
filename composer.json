@@ -1,0 +1,61 @@
+{
+    "name": "brainlet-ali/laravel-convert-timezone",
+    "description": "A minimal package to convert any model datetime fields from UTC to desired timezone.",
+    "keywords": [
+        "brainlet-ali",
+        "laravel-convert-timezone"
+    ],
+    "homepage": "https://github.com/brainlet-ali/laravel-convert-timezone",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ali Raza",
+            "email": "ali@brainlet.co",
+            "homepage": "https://spatie.be",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "doctrine/dbal": "^2.11",
+        "illuminate/contracts": "^8.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.3",
+        "vimeo/psalm": "^3.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Brainlet\\LaravelConvertTimezone\\": "src",
+            "Brainlet\\LaravelConvertTimezone\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Brainlet\\LaravelConvertTimezone\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "psalm": "vendor/bin/psalm",
+        "test": "vendor/bin/phpunit --colors=always",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
+        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Brainlet\\LaravelConvertTimezone\\LaravelConvertTimezoneServiceProvider"
+            ],
+            "aliases": {
+                "LaravelConvertTimezone": "Brainlet\\LaravelConvertTimezone\\LaravelConvertTimezoneFacade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
