@@ -28,7 +28,7 @@ return [
     // 'timezone' => ('UTC' !== auth()->user()->tz)
     // ?: env('TIMEZONE', 'UTC'),
 
-    'timezone' => env('TIMEZONE', 'UTC'),
+    'timezone' => env('TIMEZONE', 'Asia/Karachi'),
 ];
 ```
 
