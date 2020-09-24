@@ -1,8 +1,7 @@
 # 
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/brainlet-ali/laravel-convert-timezone.svg?style=flat-square)](https://packagist.org/packages/brainlet-ali/laravel-convert-timezone)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/brainlet-ali/laravel-convert-timezone/run-tests?label=tests)](https://github.com/brainlet-ali/laravel-convert-timezone/actions?query=workflow%3ATests+branch%3Amaster)
-[![Total Downloads](https://img.shields.io/packagist/dt/brainlet-ali/laravel-convert-timezone.svg?style=flat-square)](https://packagist.org/packages/brainlet-ali/laravel-convert-timezone)
+[![GitHub Tests Action Status](https://github.com/laravel/framework/workflows/tests/badge.svg)](https://github.com/brainlet-ali/laravel-convert-timezone/actions)
 
 
 A minimal package to convert any model's datetime fields from UTC to desired timezone.
