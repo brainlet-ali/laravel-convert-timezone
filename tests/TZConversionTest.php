@@ -2,7 +2,7 @@
 
 namespace Brainlet\LaravelConvertTimezone\Tests;
 
-use Brainlet\LaravelConvertTimezone\Models\MyModel;
+use Brainlet\LaravelConvertTimezone\Tests\Models\MyModel;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

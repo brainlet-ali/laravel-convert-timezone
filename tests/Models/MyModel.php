@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Brainlet\LaravelConvertTimezone\Models;
+namespace Brainlet\LaravelConvertTimezone\Tests\Models;
 
 use Brainlet\LaravelConvertTimezone\Traits\ConvertTZ;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
