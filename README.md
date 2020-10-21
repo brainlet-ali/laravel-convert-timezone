@@ -9,16 +9,22 @@ A minimal package to convert any model's datetime fields from UTC to desired tim
 
 ## Installation
 
+####Laravel
 You can install the package via composer:
-
 ```bash
 composer require brainlet-ali/laravel-convert-timezone
 ```
-
 You can publish the config file with:
 ```bash
 php artisan vendor:publish --provider="Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProvider" --tag="config"
 ```
+####Lumen
+Add this into your service providers in bootstrap/app.php:
+```bash
+$app->register(Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProvider::class);
+```
+Copy vendor/brainlet-ali/config/tz.php into your config directory
+
 
 This is the contents of the published config file:
 
