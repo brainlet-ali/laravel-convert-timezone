@@ -8,7 +8,7 @@ class LaravelConvertTimezoneServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
+        if (Helpers::isLaravel() && $this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/tz.php' => config_path('tz.php'),
             ], 'config');
