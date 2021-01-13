@@ -8,23 +8,22 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TZConversionTest extends TestCase
 {
+
     use RefreshDatabase;
 
     /** @test */
-    public function it_converts_utc_to_asked_timezone()
+    public function it_converts_utc_time_to_asked_timezone()
     {
-        $model = MyModel::factory()->create();
-
         $UTCDateTime = Carbon::now(); // UTC
 
-        $model->update(['created_at' => $UTCDateTime]);
+        $model = MyModel::factory()->create(['created_at' => $UTCDateTime]);
 
-        $createdAtFromUTCToTimezone = Carbon::parse($UTCDateTime)
-            ->addHours(5); // UTC (+5) [Asia/Karachi]
+        $asiaKarachiTZ = Carbon::parse($UTCDateTime)
+          ->addHours(5)->format('Y-m-d H:i:s'); // UTC (+5) [Asia/Karachi]
 
-        $this::assertEquals(
-            $createdAtFromUTCToTimezone->format('Y-m-d H:i:s'),
-            $model->created_at->format('Y-m-d H:i:s')
-        );
+        // the config/tz.php is set to UTC (+5), asia/karachi timezone
+        $convertedTZ = $model->created_at->format('Y-m-d H:i:s');
+
+        $this::assertSame($asiaKarachiTZ, $convertedTZ);
     }
 }
