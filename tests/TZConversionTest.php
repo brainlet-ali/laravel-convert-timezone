@@ -13,7 +13,6 @@ class TZConversionTest extends TestCase
     /** @test */
     public function it_converts_utc_to_asked_timezone()
     {
-        $this->withoutExceptionHandling();
         $model = MyModel::factory()->create();
 
         $UTCDateTime = Carbon::now(); // UTC
