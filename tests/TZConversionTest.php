@@ -8,7 +8,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TZConversionTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /** @test */
