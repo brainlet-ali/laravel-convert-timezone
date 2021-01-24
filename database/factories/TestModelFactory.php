@@ -2,12 +2,12 @@
 
 namespace Brainlet\LaravelConvertTimezone\Database\Factories;
 
-use Brainlet\LaravelConvertTimezone\Tests\Models\MyModel;
+use Brainlet\LaravelConvertTimezone\Tests\Models\TestModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class MyModelFactory extends Factory
+class TestModelFactory extends Factory
 {
-    protected $model = MyModel::class;
+    protected $model = TestModel::class;
 
     public function definition()
     {
