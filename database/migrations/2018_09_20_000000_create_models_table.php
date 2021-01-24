@@ -10,7 +10,6 @@ class CreateModelsTable extends Migration
     {
         Schema::create('models', function (Blueprint $table) {
             $table->bigIncrements('id');
-
             $table->timestamps();
         });
     }
