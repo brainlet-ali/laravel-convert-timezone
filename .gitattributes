@@ -1,7 +1,7 @@
 # Path-based git attributes
 # https://www.kernel.org/pub/software/scm/git/docs/gitattributes.html
 
-# Ignore all test and documentation with "export-ignore".
+# Ignore these when user install the package (don't include in vendor directory)
 /.gitattributes     export-ignore
 /.gitignore         export-ignore
 /.travis.yml        export-ignore
@@ -12,5 +12,4 @@
 /.github            export-ignore
 /psalm.xml          export-ignore
 /database           export-ignore
-/Models             export-ignore
 
