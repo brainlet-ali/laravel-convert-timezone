@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Brainlet\LaravelConvertTimezone;
 
 class Helpers
