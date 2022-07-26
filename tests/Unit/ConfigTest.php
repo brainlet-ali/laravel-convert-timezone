@@ -4,7 +4,6 @@ namespace Brainlet\LaravelConvertTimezone\Tests;
 
 class ConfigTest extends TestCase
 {
-
     /** @test */
     public function tz_config_file_is_present()
     {

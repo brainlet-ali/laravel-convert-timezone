@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Brainlet\LaravelConvertTimezone\Traits;
 
 use Carbon\Carbon;

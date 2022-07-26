@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Brainlet\LaravelConvertTimezone\Tests\Models;
 
 use Brainlet\LaravelConvertTimezone\Traits\ConvertTZ;
