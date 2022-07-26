@@ -51,8 +51,8 @@ class MyModel extends Model
     ...
 }
 
+$myModel = MyModel::first();
 $myModel->created_at; // (outputs converted to timezone as defined in config)
-
 ```
 
 ## Changelog
