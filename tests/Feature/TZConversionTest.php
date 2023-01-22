@@ -2,6 +2,7 @@
 
 namespace Brainlet\LaravelConvertTimezone\Tests\Feature;
 
+use Brainlet\LaravelConvertTimezone\Exceptions\InvalidTimezone;
 use Brainlet\LaravelConvertTimezone\Tests\Models\TestModel;
 use Brainlet\LaravelConvertTimezone\Tests\Models\TestModelWithAccessor;
 use Brainlet\LaravelConvertTimezone\Tests\TestCase;
@@ -36,5 +37,18 @@ class TZConversionTest extends TestCase
 
         $this->assertNotInstanceOf(Carbon::class, $model->created_at);
         $this->assertIsString($model->created_at);
+    }
+
+    /** @test */
+    public function it_throws_exception_if_timezone_is_invalid()
+    {
+        $this->expectException(InvalidTimezone::class);
+        $this->expectExceptionMessage('The timezone `invalid-timezone` is invalid.');
+
+        config(['tz.timezone' => 'invalid-timezone']);
+
+        $model = TestModel::factory()->create(['created_at' => now()]);
+
+        echo $model->created_at;
     }
 }

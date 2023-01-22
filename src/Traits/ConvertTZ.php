@@ -2,6 +2,7 @@
 
 namespace Brainlet\LaravelConvertTimezone\Traits;
 
+use Brainlet\LaravelConvertTimezone\Exceptions\InvalidTimezone;
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
 use Exception;
@@ -20,11 +21,12 @@ trait ConvertTZ
             return parent::mutateAttribute($key, $value);
         }
 
+        $tz = $this->getTZ();
         try {
             return (new Carbon($value))
-                ->setTimezone(new CarbonTimeZone($this->getTZ()));
+                ->setTimezone(new CarbonTimeZone($tz));
         } catch (Exception $e) {
-            return 'Invalid DateTime Exception: '.$e->getMessage();
+            throw InvalidTimezone::make($tz);
         }
     }
 
