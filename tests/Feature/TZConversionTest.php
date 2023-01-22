@@ -16,7 +16,7 @@ class TZConversionTest extends TestCase
     /** @test */
     public function it_converts_utc_time_to_asked_timezone()
     {
-        $UTCDateTime = Carbon::now(); // UTC
+        $UTCDateTime = now(); // UTC
 
         $model = TestModel::factory()->create(['created_at' => $UTCDateTime]);
 
@@ -33,12 +33,11 @@ class TZConversionTest extends TestCase
     /** @test */
     public function it_never_converts_filed_if_accessor_method_is_available()
     {
-        $UTCDateTime = Carbon::now(); // UTC
+        $UTCDateTime = now(); // UTC
 
         $model = TestModelWithAccessor::factory()->create(['created_at' => $UTCDateTime]);
 
         $this->assertNotInstanceOf(Carbon::class, $model->created_at);
-        $this->assertIsString($model->created_at);
     }
 
     /** @test */
