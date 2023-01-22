@@ -8,11 +8,7 @@ class LaravelConvertTimezoneServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        if (Helpers::isLaravel() && $this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/tz.php' => config_path('tz.php'),
-            ], 'config');
-        }
+        $this->offerPublishing();
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
@@ -23,5 +19,17 @@ class LaravelConvertTimezoneServiceProvider extends ServiceProvider
             __DIR__.'/../config/tz.php',
             'tz'
         );
+    }
+
+    protected function offerPublishing()
+    {
+        if (! function_exists('config_path')) {
+            // function not available and 'publish' not relevant in Lumen
+            return;
+        }
+
+        $this->publishes([
+            __DIR__.'/../config/tz.php' => config_path('tz.php'),
+        ], 'tz-config');
     }
 }
