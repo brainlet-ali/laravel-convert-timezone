@@ -1,6 +1,8 @@
 <?php
 
-namespace Brainlet\LaravelConvertTimezone\Tests;
+namespace Brainlet\LaravelConvertTimezone\Tests\Unit;
+
+use Brainlet\LaravelConvertTimezone\Tests\TestCase;
 
 class ConfigTest extends TestCase
 {
