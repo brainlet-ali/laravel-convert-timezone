@@ -17,11 +17,6 @@ You can publish the config file with:
 ```bash
 php artisan vendor:publish --provider="Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProvider" --tag="tz-config"
 ```
-### Lumen
-Add this into your service providers in bootstrap/app.php:
-```bash
-$app->register(Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProvider::class);
-```
 Copy vendor/brainlet-ali/config/tz.php into your config directory
 
 ## Usage
