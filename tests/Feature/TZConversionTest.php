@@ -20,6 +20,8 @@ class TZConversionTest extends TestCase
 
         $model = TestModel::factory()->create(['created_at' => $UTCDateTime]);
 
+        config(['tz.timezone' => 'Asia/Karachi']);
+
         $asiaKarachiTZ = Carbon::parse($UTCDateTime)
           ->addHours(5)->format('Y-m-d H:i:s'); // UTC (+5) [Asia/Karachi]
 
