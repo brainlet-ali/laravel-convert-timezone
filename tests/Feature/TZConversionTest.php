@@ -16,28 +16,39 @@ class TZConversionTest extends TestCase
     /** @test */
     public function it_converts_utc_time_to_asked_timezone()
     {
-        $UTCDateTime = now(); // UTC
+        $utcTime = now(); // UTC
 
-        $model = TestModel::factory()->create(['created_at' => $UTCDateTime]);
+        $model = TestModel::factory()->create(['created_at' => $utcTime]);
 
         config(['tz.timezone' => 'Asia/Karachi']);
 
-        $asiaKarachiTZ = Carbon::parse($UTCDateTime)
+        $destinationTime = Carbon::parse($utcTime)
           ->addHours(5)->format('Y-m-d H:i:s'); // UTC (+5) [Asia/Karachi]
 
-        $convertedTZ = $model->created_at->format('Y-m-d H:i:s');
+        $convertedTime = $model->created_at;
 
-        $this::assertSame($asiaKarachiTZ, $convertedTZ);
+        $this->assertInstanceOf(Carbon::class, $convertedTime);
+
+        $this::assertSame($destinationTime, $convertedTime->format('Y-m-d H:i:s'));
     }
 
     /** @test */
     public function it_never_converts_filed_if_accessor_method_is_available()
     {
-        $UTCDateTime = now(); // UTC
+        $utcTime = now(); // UTC
 
-        $model = TestModelWithAccessor::factory()->create(['created_at' => $UTCDateTime]);
+        $model = TestModelWithAccessor::factory()->create(['created_at' => $utcTime]);
 
-        $this->assertNotInstanceOf(Carbon::class, $model->created_at);
+        config(['tz.timezone' => 'Asia/Karachi']);
+
+        $destinationTime = Carbon::parse($utcTime)
+            ->addHours(5)->format('Y-m-d H:i:s'); // UTC (+5) [Asia/Karachi]
+
+        $convertedTime = $model->created_at;
+
+        $this->assertNotInstanceOf(Carbon::class, $convertedTime);
+
+        $this::assertNotSame($destinationTime, $convertedTime);
     }
 
     /** @test */
