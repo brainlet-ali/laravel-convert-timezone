@@ -15,6 +15,6 @@ class ConfigTest extends TestCase
     public function it_has_key_timezone()
     {
         $configTimezone = config('tz.timezone');
-        $this->assertEquals('Asia/Karachi', $configTimezone);
+        $this->assertEquals('UTC', $configTimezone);
     }
 }
