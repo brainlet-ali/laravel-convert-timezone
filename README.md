@@ -24,18 +24,6 @@ $app->register(Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProv
 ```
 Copy vendor/brainlet-ali/config/tz.php into your config directory
 
-
-This is the contents of the published config file:
-
-```php
-return [
-    // 'timezone' => ('UTC' !== auth()->user()->tz)
-    // ?: env('TIMEZONE', 'UTC'),
-
-    'timezone' => env('TIMEZONE', 'Asia/Karachi'),
-];
-```
-
 ## Usage
 
 ``` php
