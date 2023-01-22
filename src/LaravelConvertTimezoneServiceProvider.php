@@ -31,6 +31,5 @@ class LaravelConvertTimezoneServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/tz.php' => config_path('tz.php'),
         ], 'tz-config');
-
     }
 }
