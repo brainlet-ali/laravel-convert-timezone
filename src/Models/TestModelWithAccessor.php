@@ -4,8 +4,9 @@ namespace Brainlet\LaravelConvertTimezone\Models;
 
 use Brainlet\LaravelConvertTimezone\Traits\ConvertTZ;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class TestModelWithAccessor extends \Illuminate\Database\Eloquent\Model
+class TestModelWithAccessor extends Model
 {
     protected $table = 'models';
 
