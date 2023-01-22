@@ -14,5 +14,5 @@ return [
     |
     */
 
-    'timezone' => env('TIMEZONE', 'Asia/Karachi'),
+    'timezone' => env('TIMEZONE', 'UTC'),
 ];
