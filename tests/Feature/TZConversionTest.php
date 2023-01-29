@@ -61,6 +61,6 @@ class TZConversionTest extends TestCase
 
         $model = TestModel::factory()->create(['created_at' => now()]);
 
-        echo $model->created_at;
+        $this->assertNotInstanceOf(Carbon::class, $model->created_at);
     }
 }
