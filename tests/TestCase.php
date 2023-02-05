@@ -4,11 +4,14 @@ namespace Brainlet\LaravelConvertTimezone\Tests;
 
 use Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
-    public function setUp(): void
+    use LazilyRefreshDatabase;
+
+    protected function setUp(): void
     {
         parent::setUp();
 
