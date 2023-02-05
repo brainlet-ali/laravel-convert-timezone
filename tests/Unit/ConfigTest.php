@@ -1,22 +1,11 @@
 <?php
 
-namespace Brainlet\LaravelConvertTimezone\Tests\Unit;
+it('checks if config file is present', function () {
+    $config = config('tz');
+    $this->assertTrue(true, count($config) > 0);
+});
 
-use Brainlet\LaravelConvertTimezone\Tests\TestCase;
-
-class ConfigTest extends TestCase
-{
-    /** @test */
-    public function tz_config_file_is_present()
-    {
-        $config = config('tz');
-        $this->assertTrue(true, count($config) > 0);
-    }
-
-    /** @test */
-    public function it_has_key_timezone()
-    {
-        $configTimezone = config('tz.timezone');
-        $this->assertEquals('UTC', $configTimezone);
-    }
-}
+it('checks if config file has key timezone', function () {
+    $configTimezone = config('tz.timezone');
+    $this->assertEquals('UTC', $configTimezone);
+});
