@@ -24,6 +24,8 @@
         "friendsofphp/php-cs-fixer": "^3.0",
         "laravel/pint": "^1.0",
         "orchestra/testbench": "^7.6",
+        "pestphp/pest": "^1.22",
+        "pestphp/pest-plugin-laravel": "^1.4",
         "phpunit/phpunit": "^9.5",
         "vimeo/psalm": "^4.24"
     },
@@ -49,7 +51,10 @@
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
