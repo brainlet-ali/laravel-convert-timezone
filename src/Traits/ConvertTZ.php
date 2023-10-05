@@ -10,69 +10,89 @@ use Illuminate\Support\Str;
 
 trait ConvertTZ
 {
-    public function hasGetMutator($key)
+    /**
+     * The attributes of a model that should be converted to the configured timezone.
+     */
+    private array $dateTimeAttributes = [];
+
+    public function __construct()
     {
-        return parent::hasGetMutator($key) || $this->isTZAttribute($key);
+        parent::__construct();
+
+        $this->dateTimeAttributes = $this->getDateTimeAttributes();
     }
 
+    /**
+     * Override the parent getAttribute method so that we can allow for
+     * mutation if the class itself don't have a get mutator for the attribute,
+     * or it qualifies as a datetime attribute.
+     */
+    public function hasGetMutator($key): bool
+    {
+        return parent::hasGetMutator($key) || $this->isTzAttribute($key);
+    }
+
+    /**
+     * Do the actual mutation if there is no mutator defined for the attribute or
+     * the attribute qualifies as a datetime attribute.
+     * @throws \Exception
+     */
     protected function mutateAttribute($key, $value)
     {
+        // if the class itself has a get mutator for the attribute don't mutate it
         if (parent::hasGetMutator($key)) {
             return parent::mutateAttribute($key, $value);
         }
 
-        $tz = $this->getTZ();
+        $tz = $this->getTz();
         try {
-            return (new Carbon($value))
-                ->setTimezone(new CarbonTimeZone($tz));
+            return (new Carbon($value))->setTimezone(new CarbonTimeZone($tz));
         } catch (Exception $e) {
             throw InvalidTimezone::make($tz);
         }
     }
 
-    protected function isTZAttribute($key)
+    /**
+     * Determine if the given attribute is a datetime attribute.
+     */
+    protected function isTzAttribute($key): bool
     {
-        return in_array(
-            $this->generateAccessorName($key),
-            $this->getDateTimeAttributes()
-        );
+        return in_array($this->generateAccessorName($key), $this->dateTimeAttributes);
     }
 
-    protected function getDateTimeAttributes()
+    /**
+     * Get all datetime attributes of the model.
+     */
+    protected function getDateTimeAttributes(): array
     {
         $table = $this->getTable();
         $builder = $this->getConnection()->getSchemaBuilder();
-        $columns = $builder->getColumnListing($this->getTable());
-        $columnsWithType
-                 = collect($columns)
-            ->mapWithKeys(function ($item, $key) use ($builder, $table) {
-                $type = $builder->getColumnType($table, $item);
+        $columns = $builder->getColumnListing($table);
 
-                return [$item => $type];
-            })->toArray();
+        $datetimeKeys = [];
+        foreach ($columns as $column) {
+            $type = $builder->getColumnType($table, $column);
 
-        return array_map(
-            fn (
-                $key
-            ) => $this->generateAccessorName($key),
-            array_keys(
-                array_filter(
-                    $columnsWithType,
-                    fn ($type) => $type === 'datetime'
-                )
-            )
-        );
+            if ($type === 'datetime') {
+                $datetimeKeys[] = $this->generateAccessorName($column);
+            }
+        }
+
+        return $datetimeKeys;
     }
 
-    protected function generateAccessorName($key)
+    /**
+     * Generate the accessor name for the given key.
+     */
+    protected function generateAccessorName($key): string
     {
         return 'get'.Str::studly($key).'Attribute';
     }
 
     /**
-     * @return \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
+     * Get the timezone from the config file.
      */
-    protected function getTZ()
+    protected function getTz(): string
     {
         return config('tz.timezone');
     }
