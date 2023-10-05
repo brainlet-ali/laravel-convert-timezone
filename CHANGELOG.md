@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-convert-timezone` are as follows:
 
+## 2.0.1 - 2023-10-06
+- add internal implementation for timezone conversion
+- update readme
+
 ## 2.0 - 2022-07-26
 - add L9 support
 - update package dependencies
