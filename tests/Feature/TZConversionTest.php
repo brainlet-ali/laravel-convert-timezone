@@ -1,8 +1,8 @@
 <?php
 
 use Brainlet\LaravelConvertTimezone\Exceptions\InvalidTimezone;
-use Brainlet\LaravelConvertTimezone\Models\TestModel;
-use Brainlet\LaravelConvertTimezone\Models\TestModelWithAccessor;
+use Brainlet\LaravelConvertTimezone\Tests\Models\TestModel;
+use Brainlet\LaravelConvertTimezone\Tests\Models\TestModelWithAccessor;
 use Carbon\Carbon;
 
 it('converts utc time to destination timezone', function () {
