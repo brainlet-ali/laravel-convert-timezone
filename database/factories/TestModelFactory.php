@@ -2,7 +2,7 @@
 
 namespace Brainlet\LaravelConvertTimezone\Database\Factories;
 
-use Brainlet\LaravelConvertTimezone\Models\TestModel;
+use Brainlet\LaravelConvertTimezone\Tests\Models\TestModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TestModelFactory extends Factory
