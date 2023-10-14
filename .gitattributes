@@ -13,5 +13,3 @@
 /.github            export-ignore
 /psalm.xml          export-ignore
 /database           export-ignore
-/src/Models         export-ignore
-
