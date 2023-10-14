@@ -6,7 +6,6 @@ use Brainlet\LaravelConvertTimezone\Exceptions\InvalidTimezone;
 use Carbon\Carbon;
 use Carbon\CarbonTimeZone;
 use Exception;
-use Illuminate\Support\Str;
 
 trait ConvertTZ
 {
@@ -15,35 +14,28 @@ trait ConvertTZ
      */
     private array $dateTimeAttributes = [];
 
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->dateTimeAttributes = $this->getDateTimeAttributes();
-    }
-
     /**
-     * Override the parent getAttribute method so that we can allow for
-     * mutation if the class itself don't have a get mutator for the attribute,
-     * or it qualifies as a datetime attribute.
-     */
-    public function hasGetMutator($key): bool
-    {
-        return parent::hasGetMutator($key) || $this->isTzAttribute($key);
-    }
-
-    /**
-     * Do the actual mutation if there is no mutator defined for the attribute or
-     * the attribute qualifies as a datetime attribute.
+     * Override the parent's boot method so that we can register our event listener.
      * @throws \Exception
      */
-    protected function mutateAttribute($key, $value)
+    public static function bootConvertTZ()
     {
-        // if the class itself has a get mutator for the attribute don't mutate it
-        if (parent::hasGetMutator($key)) {
-            return parent::mutateAttribute($key, $value);
-        }
+        static::retrieved(function ($model) {
+            $model->dateTimeAttributes = $model->getDateTimeAttributes();
+            foreach ($model->attributes as $key => $value) {
+                if ($model->isTzAttribute($key) && !$model->hasGetMutator($key)) {
+                    $model->attributes[$key] = $model->mutateAttribute($key, $value);
+                }
+            }
+        });
+    }
 
+    /**
+     * Mutate the given attribute to a Carbon instance w.r.t. the configured timezone.
+     * @throws \Exception
+     */
+    protected function mutateAttribute($key, $value): Carbon
+    {
         $tz = $this->getTz();
         try {
             return (new Carbon($value))->setTimezone(new CarbonTimeZone($tz));
@@ -57,7 +49,7 @@ trait ConvertTZ
      */
     protected function isTzAttribute($key): bool
     {
-        return in_array($this->generateAccessorName($key), $this->dateTimeAttributes);
+        return in_array($key, $this->dateTimeAttributes);
     }
 
     /**
@@ -74,19 +66,11 @@ trait ConvertTZ
             $type = $builder->getColumnType($table, $column);
 
             if ($type === 'datetime') {
-                $datetimeKeys[] = $this->generateAccessorName($column);
+                $datetimeKeys[] = $column;
             }
         }
 
         return $datetimeKeys;
-    }
-
-    /**
-     * Generate the accessor name for the given key.
-     */
-    protected function generateAccessorName($key): string
-    {
-        return 'get'.Str::studly($key).'Attribute';
     }
 
     /**
@@ -95,5 +79,19 @@ trait ConvertTZ
     protected function getTz(): string
     {
         return config('tz.timezone');
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function toArray(): array
+    {
+        $attributes = parent::toArray();
+        foreach ($this->getDateTimeAttributes() as $key) {
+            if ($this->isTzAttribute($key) && !$this->hasGetMutator($key)) {
+                $attributes[$key] = $this->mutateAttribute($key, $attributes[$key])->toIso8601String();
+            }
+        }
+        return $attributes;
     }
 }
