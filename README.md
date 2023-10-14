@@ -33,8 +33,12 @@ class MyModel extends Model
 }
 
 $myModel = MyModel::first();
-$myModel->created_at; // (outputs converted to timezone as defined in config when accessed)
+$myModel->created_at; // (outputs converted to timezone as defined in config)
 ```
+
+## Limitations
+
+- Only works with Eloquent models.
 
 ## Changelog
 
