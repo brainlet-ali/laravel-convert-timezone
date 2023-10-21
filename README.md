@@ -19,6 +19,7 @@ php artisan vendor:publish --provider="Brainlet\LaravelConvertTimezone\LaravelCo
 ## Usage
 
 ``` php
+...
 use Brainlet\LaravelConvertTimezone\Traits\ConvertTZ;
 
 
@@ -27,7 +28,7 @@ class MyModel extends Model
 
     use ..., ConvertTZ;
 
-    ...
+    // ...
 }
 
 $myModel = MyModel::first();
