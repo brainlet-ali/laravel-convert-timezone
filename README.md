@@ -2,9 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/brainlet-ali/laravel-convert-timezone.svg?style=flat-square)](https://packagist.org/packages/brainlet-ali/laravel-convert-timezone)
 
-
 A minimal package to convert any model's datetime fields from UTC to desired timezone.
-
 
 ## Installation
 
@@ -40,14 +38,9 @@ $myModel->created_at; // (outputs converted to timezone as defined in config)
 
 - Only works with Eloquent models.
 
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
 ## Security Vulnerabilities
 
 If you found any security vulnerabilities please contact me at: ali@brainlet.co
-
 
 ## License
 
