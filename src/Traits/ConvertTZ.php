@@ -16,6 +16,7 @@ trait ConvertTZ
 
     /**
      * Override the parent's boot method so that we can register our event listener.
+     *
      * @throws \Exception
      */
     public static function bootConvertTZ()
@@ -23,7 +24,7 @@ trait ConvertTZ
         static::retrieved(function ($model) {
             $model->dateTimeAttributes = $model->getDateTimeAttributes();
             foreach ($model->attributes as $key => $value) {
-                if ($model->isTzAttribute($key) && !$model->hasGetMutator($key)) {
+                if ($model->isTzAttribute($key) && ! $model->hasGetMutator($key)) {
                     $model->attributes[$key] = $model->mutateAttribute($key, $value);
                 }
             }
@@ -32,6 +33,7 @@ trait ConvertTZ
 
     /**
      * Mutate the given attribute to a Carbon instance w.r.t. the configured timezone.
+     *
      * @throws \Exception
      */
     protected function mutateAttribute($key, $value): Carbon
@@ -88,10 +90,11 @@ trait ConvertTZ
     {
         $attributes = parent::toArray();
         foreach ($this->getDateTimeAttributes() as $key) {
-            if ($this->isTzAttribute($key) && !$this->hasGetMutator($key)) {
+            if ($this->isTzAttribute($key) && ! $this->hasGetMutator($key)) {
                 $attributes[$key] = $this->mutateAttribute($key, $attributes[$key])->toIso8601String();
             }
         }
+
         return $attributes;
     }
 }
