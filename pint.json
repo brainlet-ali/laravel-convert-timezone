@@ -1,4 +1,5 @@
 {
+    
     "preset" : "laravel",
     "rules": {
         "array_indentation": false
