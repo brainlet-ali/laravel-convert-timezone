@@ -49,9 +49,12 @@ $posts = Post::whereDateInTimezone('created_at', '2024-01-01', 'America/New_York
 
 For detailed usage instructions, examples, and API reference, please see the [full documentation](DOC.md).
 
-## Limitations
+## Works With
 
-- Only works with Eloquent models
+- ✅ Eloquent Models (automatic conversion with `ConvertTZ` trait)
+- ✅ Query Builder (using `TimezoneQueryBuilder` class)
+- ✅ Raw DB Queries (using `TimezoneQuery` facade)
+- ✅ MySQL, PostgreSQL, SQLite databases
 
 ## Security Vulnerabilities
 

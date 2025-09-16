@@ -71,7 +71,7 @@ The trait automatically detects all datetime columns in your database table and 
 
 ## Query Builder Timezone Scopes
 
-**New in v2.0:** The package now includes powerful query builder scopes that allow you to filter your database queries with timezone awareness. These scopes handle the complexity of timezone conversion at the database level for optimal performance.
+The package includes powerful query builder scopes that allow you to filter your database queries with timezone awareness. These scopes handle the complexity of timezone conversion at the database level for optimal performance.
 
 ### How It Works
 
@@ -233,9 +233,71 @@ The package supports multiple database systems with automatic detection:
 
 5. **Timezone Validation**: Invalid timezones will throw an `InvalidArgumentException`.
 
+## Using Without Eloquent Models
+
+While the `ConvertTZ` trait requires Eloquent models, you can use the `TimezoneQueryBuilder` class or `TimezoneQuery` facade for raw database queries:
+
+### Using TimezoneQueryBuilder
+
+```php
+use Brainlet\LaravelConvertTimezone\TimezoneQueryBuilder;
+use Illuminate\Support\Facades\DB;
+
+// Raw query builder
+$query = DB::table('posts');
+
+// Apply timezone-aware date filter
+TimezoneQueryBuilder::whereDateInTimezone($query, 'created_at', '2024-01-01', 'America/New_York');
+
+$results = $query->get();
+```
+
+### Using TimezoneQuery Facade
+
+```php
+use Brainlet\LaravelConvertTimezone\Facades\TimezoneQuery;
+use Illuminate\Support\Facades\DB;
+
+$query = DB::table('orders');
+
+// Chain multiple timezone filters
+TimezoneQuery::whereYearInTimezone($query, 'created_at', 2024, 'Asia/Tokyo');
+TimezoneQuery::whereMonthInTimezone($query, 'created_at', 1, 'Asia/Tokyo');
+
+$results = $query->get();
+
+// Convert timestamps manually
+foreach ($results as $row) {
+    $row->created_at = TimezoneQuery::convertFromUTC($row->created_at, 'Asia/Tokyo');
+}
+```
+
+### Direct Database Queries
+
+```php
+use Brainlet\LaravelConvertTimezone\Facades\TimezoneQuery;
+use Illuminate\Support\Facades\DB;
+
+// Complex query with joins
+$query = DB::table('users')
+    ->join('posts', 'users.id', '=', 'posts.user_id')
+    ->select('users.name', 'posts.title', 'posts.created_at');
+
+// Apply timezone filter
+TimezoneQuery::whereBetweenInTimezone(
+    $query, 
+    'posts.created_at', 
+    ['2024-01-01', '2024-01-31'], 
+    'Europe/London'
+);
+
+$results = $query->get();
+```
+
 ## Limitations
 
-- Only works with Eloquent models
+- The `ConvertTZ` trait requires Eloquent models for automatic conversion
+- Raw queries require manual conversion using `TimezoneQuery::convertFromUTC()`
 - Requires datetime columns to be properly defined in the database
 - MySQL requires timezone tables to be populated for `CONVERT_TZ()` to work
 
