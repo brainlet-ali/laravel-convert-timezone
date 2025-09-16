@@ -73,6 +73,10 @@ public function getCreatedAtAttribute($value)
 }
 ```
 
+## Documentation
+
+For more detailed usage examples and advanced features, see the [full documentation](DOC.md).
+
 ## Requirements
 
 - PHP 7.4+ or 8.0+
