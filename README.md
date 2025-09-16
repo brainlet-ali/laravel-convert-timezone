@@ -93,9 +93,23 @@ composer test
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Security
+### Reporting Issues
 
-If you discover any security vulnerabilities, please create an issue on the GitHub repository.
+When [creating an issue](https://github.com/brainlet-ali/laravel-convert-timezone/issues/new), please provide:
+- Clear description of the problem
+- Steps to reproduce the issue
+- Expected vs actual behavior
+- Laravel version and PHP version
+- Any relevant error messages or stack traces
+
+### Security Issues
+
+If you discover any security vulnerabilities, please [create an issue](https://github.com/brainlet-ali/laravel-convert-timezone/issues/new) with:
+- **Title**: [SECURITY] Brief description
+- **Description**: Detailed explanation of the vulnerability
+- **Steps to reproduce**: How to replicate the issue
+- **Impact**: Potential security implications
+- **Suggested fix**: If you have a solution in mind
 
 ## License
 
