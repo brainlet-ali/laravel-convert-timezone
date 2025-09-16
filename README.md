@@ -1,8 +1,8 @@
-# 
+# Laravel Convert Timezone
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/brainlet-ali/laravel-convert-timezone.svg?style=flat-square)](https://packagist.org/packages/brainlet-ali/laravel-convert-timezone)
 
-A minimal package to convert any model's datetime fields from UTC to desired timezone.
+A powerful Laravel package for automatic timezone conversion of Eloquent model datetime fields and timezone-aware query filtering.
 
 ## Installation
 
@@ -16,28 +16,42 @@ You can publish the config file with:
 php artisan vendor:publish --provider="Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProvider" --tag="tz-config"
 ```
 
-## Usage
+## Features
 
-``` php
-...
+- 🌍 **Automatic timezone conversion** for all datetime fields
+- 🔍 **Timezone-aware query scopes** for filtering data
+- 📅 **Date, time, and datetime filtering** with timezone support
+- 🗄️ **Multi-database support** (MySQL, PostgreSQL, SQLite)
+- ⚡ **Database-level performance** optimization
+- 🎯 **Simple, intuitive API** that feels natural
+
+## Quick Start
+
+Add the `ConvertTZ` trait to your model:
+
+```php
 use Brainlet\LaravelConvertTimezone\Traits\ConvertTZ;
 
-
-class MyModel extends Model
+class Post extends Model
 {
-
-    use ..., ConvertTZ;
-
-    // ...
+    use ConvertTZ;
 }
 
-$myModel = MyModel::first();
-$myModel->created_at; // (outputs converted to timezone as defined in config)
+// Automatically converts datetime fields to your configured timezone
+$post = Post::first();
+echo $post->created_at; // Shows in America/New_York instead of UTC
+
+// Filter posts created on a specific date in user's timezone
+$posts = Post::whereDateInTimezone('created_at', '2024-01-01', 'America/New_York')->get();
 ```
+
+## Documentation
+
+For detailed usage instructions, examples, and API reference, please see the [full documentation](DOC.md).
 
 ## Limitations
 
-- Only works with Eloquent models.
+- Only works with Eloquent models
 
 ## Security Vulnerabilities
 
