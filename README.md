@@ -104,12 +104,7 @@ When [creating an issue](https://github.com/brainlet-ali/laravel-convert-timezon
 
 ### Security Issues
 
-If you discover any security vulnerabilities, please [create an issue](https://github.com/brainlet-ali/laravel-convert-timezone/issues/new) with:
-- **Title**: [SECURITY] Brief description
-- **Description**: Detailed explanation of the vulnerability
-- **Steps to reproduce**: How to replicate the issue
-- **Impact**: Potential security implications
-- **Suggested fix**: If you have a solution in mind
+If you discover any security vulnerabilities, please email brainlet.ali@gmail.com
 
 ## License
 
