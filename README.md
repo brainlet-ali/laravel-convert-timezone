@@ -95,7 +95,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Security
 
-If you discover any security vulnerabilities, please email ali@brainlet.co instead of using the issue tracker.
+If you discover any security vulnerabilities, please create an issue on the GitHub repository.
 
 ## License
 
