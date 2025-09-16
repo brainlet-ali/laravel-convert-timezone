@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/brainlet-ali/laravel-convert-timezone.svg?style=flat-square)](https://packagist.org/packages/brainlet-ali/laravel-convert-timezone)
 
-A powerful Laravel package for automatic timezone conversion of Eloquent model datetime fields and timezone-aware query filtering.
+Seamlessly handle timezone conversions in your Laravel applications. This lightweight package automatically converts datetime fields to your users' local timezones without modifying your database, keeping everything in UTC while displaying dates and times in the correct timezone for each user.
 
 ## Installation
 
@@ -16,18 +16,17 @@ You can publish the config file with:
 php artisan vendor:publish --provider="Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProvider" --tag="tz-config"
 ```
 
-## Features
+## Why Use This Package?
 
-- 🌍 **Automatic timezone conversion** for all datetime fields
-- 🔍 **Timezone-aware query scopes** for filtering data
-- 📅 **Date, time, and datetime filtering** with timezone support
-- 🗄️ **Multi-database support** (MySQL, PostgreSQL, SQLite)
-- ⚡ **Database-level performance** optimization
-- 🎯 **Simple, intuitive API** that feels natural
+Working with timezones in web applications is challenging. Store times in UTC? Display in user's timezone? Filter by local dates? This package solves these problems elegantly:
+
+- ✅ **Zero Database Changes** - Keep storing everything in UTC
+- ✅ **Automatic Conversion** - DateTime fields automatically display in the configured timezone
+- ✅ **Smart Filtering** - Query by dates/times in any timezone without complex calculations
+- ✅ **Laravel Native** - Works seamlessly with Eloquent models and query builder
+- ✅ **Minimal Setup** - Just add a trait to your model and you're ready to go
 
 ## Quick Start
-
-Add the `ConvertTZ` trait to your model:
 
 ```php
 use Brainlet\LaravelConvertTimezone\Traits\ConvertTZ;
@@ -37,28 +36,62 @@ class Post extends Model
     use ConvertTZ;
 }
 
-// Automatically converts datetime fields to your configured timezone
+// That's it! All datetime fields now automatically convert to your configured timezone
 $post = Post::first();
-echo $post->created_at; // Shows in America/New_York instead of UTC
-
-// Filter posts created on a specific date in user's timezone
-$posts = Post::whereDateInTimezone('created_at', '2024-01-01', 'America/New_York')->get();
+echo $post->created_at; // 2024-01-15 09:30:00 (in America/New_York instead of UTC)
 ```
 
-## Documentation
+## Basic Usage
 
-For detailed usage instructions, examples, and API reference, please see the [full documentation](DOC.md).
+### Configuration
 
-## Works With
+Set your default timezone in the config file or `.env`:
 
-- ✅ Eloquent Models (automatic conversion with `ConvertTZ` trait)
-- ✅ Query Builder (using `TimezoneQueryBuilder` class)
-- ✅ Raw DB Queries (using `TimezoneQuery` facade)
-- ✅ MySQL, PostgreSQL, SQLite databases
+```php
+// config/tz.php
+'timezone' => env('TIMEZONE', 'America/New_York'),
+```
 
-## Security Vulnerabilities
+### Automatic Conversion
 
-If you found any security vulnerabilities please contact me at: brainlet.ali@gmail.com
+Once you add the `ConvertTZ` trait, all datetime fields (`created_at`, `updated_at`, etc.) are automatically converted:
+
+```php
+$user = User::create(['email' => 'user@example.com']);
+echo $user->created_at; // Displays in your configured timezone, not UTC
+```
+
+### Accessor Compatibility
+
+The trait respects existing accessors - if you have a custom accessor for a datetime field, it won't interfere:
+
+```php
+public function getCreatedAtAttribute($value)
+{
+    // Your custom logic here
+    return $value; // This will take precedence over timezone conversion
+}
+```
+
+## Requirements
+
+- PHP 7.4+ or 8.0+
+- Laravel 9.0+ | 10.0+ | 11.0+
+- Doctrine DBAL 3.8+
+
+## Testing
+
+```bash
+composer test
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Security
+
+If you discover any security vulnerabilities, please email ali@brainlet.co instead of using the issue tracker.
 
 ## License
 
