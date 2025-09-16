@@ -9,6 +9,8 @@ use Exception;
 
 trait ConvertTZ
 {
+    use TimezoneScopes;
+
     /**
      * The attributes of a model that should be converted to the configured timezone.
      */
