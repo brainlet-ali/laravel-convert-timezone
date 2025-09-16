@@ -58,7 +58,7 @@ For detailed usage instructions, examples, and API reference, please see the [fu
 
 ## Security Vulnerabilities
 
-If you found any security vulnerabilities please contact me at: ali@brainlet.co
+If you found any security vulnerabilities please contact me at: brainlet.ali@gmail.com
 
 ## License
 
