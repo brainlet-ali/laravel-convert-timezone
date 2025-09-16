@@ -9,3 +9,8 @@ docs
 phpunit.xml
 psalm.xml
 vendor
+
+# Docker
+.docker
+docker-compose.override.yml
+.env.docker
