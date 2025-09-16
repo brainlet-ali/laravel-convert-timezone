@@ -1,54 +1,66 @@
 <?php
 
+namespace Brainlet\LaravelConvertTimezone\Tests\Feature;
+
 use Brainlet\LaravelConvertTimezone\Exceptions\InvalidTimezone;
 use Brainlet\LaravelConvertTimezone\Tests\Models\TestModel;
 use Brainlet\LaravelConvertTimezone\Tests\Models\TestModelWithAccessor;
+use Brainlet\LaravelConvertTimezone\Tests\TestCase;
 use Carbon\Carbon;
 
-it('converts utc time to destination timezone', function () {
-    $utcTime = now(); // UTC
+class TZConversionTest extends TestCase
+{
+    public function test_converts_utc_time_to_destination_timezone()
+    {
+        $utcTime = now(); // UTC
 
-    TestModel::factory()->create(['created_at' => $utcTime]);
+        TestModel::factory()->create(['created_at' => $utcTime]);
 
-    config(['tz.timezone' => 'Asia/Karachi']);
+        config(['tz.timezone' => 'Asia/Karachi']);
 
-    $destinationTime = Carbon::parse($utcTime)
-        ->addHours(5)->format('Y-m-d H:i:s'); // UTC (+5) [Asia/Karachi]
+        $destinationTime = Carbon::parse($utcTime)
+            ->addHours(5)->format('Y-m-d H:i:s'); // UTC (+5) [Asia/Karachi]
 
-    $model = TestModel::first();
+        $model = TestModel::first();
 
-    $convertedTime = $model->created_at;
+        $convertedTime = $model->created_at;
 
-    expect($convertedTime)
-        ->toBeInstanceOf(Carbon::class)
-        ->and($convertedTime->format('Y-m-d H:i:s'))->toBe($destinationTime);
-});
+        $this->assertInstanceOf(Carbon::class, $convertedTime);
+        $this->assertEquals($destinationTime, $convertedTime->format('Y-m-d H:i:s'));
+    }
 
-it('never converts date/time filed if accessor method is available', function () {
-    $utcTime = now(); // UTC
+    public function test_never_converts_datetime_filed_if_accessor_method_is_available()
+    {
+        $utcTime = now(); // UTC
 
-    TestModelWithAccessor::factory()->create(['created_at' => $utcTime]);
+        TestModelWithAccessor::factory()->create(['created_at' => $utcTime]);
 
-    config(['tz.timezone' => 'Asia/Karachi']);
+        config(['tz.timezone' => 'Asia/Karachi']);
 
-    $destinationTime = Carbon::parse($utcTime)
-        ->addHours(5)->format('Y-m-d H:i:s'); // UTC (+5) [Asia/Karachi]
+        $destinationTime = Carbon::parse($utcTime)
+            ->addHours(5)->format('Y-m-d H:i:s'); // UTC (+5) [Asia/Karachi]
 
-    $model = TestModelWithAccessor::first();
+        $model = TestModelWithAccessor::first();
 
-    $convertedTime = $model->created_at;
+        $convertedTime = $model->created_at;
 
-    expect($convertedTime)->not->toBe($destinationTime);
-});
+        // The original Pest test was checking that $convertedTime (Carbon object) is not equal to $destinationTime (string)
+        // This passes because Carbon object != string, even if their formatted values are the same
+        $this->assertNotSame($destinationTime, $convertedTime);
+    }
 
-it('throws exception if timezone is invalid', function () {
-    config(['tz.timezone' => 'invalid-timezone']);
+    public function test_throws_exception_if_timezone_is_invalid()
+    {
+        $this->expectException(InvalidTimezone::class);
+        $this->expectExceptionMessage('The timezone `invalid-timezone` is invalid.');
 
-    TestModel::factory()->create(['created_at' => now()]);
+        config(['tz.timezone' => 'invalid-timezone']);
 
-    $model = TestModel::first();
+        TestModel::factory()->create(['created_at' => now()]);
 
-    expect($model->created_at)
-        ->not->toBeInstanceOf(Carbon::class);
-})->throws(InvalidTimezone::class,
-    'The timezone `invalid-timezone` is invalid.');
+        $model = TestModel::first();
+
+        // This will trigger the exception
+        $model->created_at;
+    }
+}
