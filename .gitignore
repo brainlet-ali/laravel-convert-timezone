@@ -3,14 +3,18 @@
 .php_cs.cache
 .phpunit.result.cache
 build
-composer.lock
 coverage
 docs
 phpunit.xml
 psalm.xml
 vendor
+composer.lock
 
 # Docker
 .docker
 docker-compose.override.yml
 .env.docker
+
+# Environment
+.env
+.env.*
