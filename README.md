@@ -13,7 +13,7 @@ composer require brainlet-ali/laravel-convert-timezone
 ```
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProvider" --tag="tz-config"
+php artisan vendor:publish --provider="Brainlet\LaravelConvertTimezone\TzServiceProvider" --tag="tz-config"
 ```
 
 ## Why Use This Package?

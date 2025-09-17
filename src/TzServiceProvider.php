@@ -4,7 +4,7 @@ namespace Brainlet\LaravelConvertTimezone;
 
 use Illuminate\Support\ServiceProvider;
 
-class LaravelConvertTimezoneServiceProvider extends ServiceProvider
+class TzServiceProvider extends ServiceProvider
 {
     public function boot()
     {

@@ -2,7 +2,7 @@
 
 namespace Brainlet\LaravelConvertTimezone\Tests;
 
-use Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProvider;
+use Brainlet\LaravelConvertTimezone\TzServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -32,7 +32,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            LaravelConvertTimezoneServiceProvider::class,
+            TzServiceProvider::class,
         ];
     }
 
