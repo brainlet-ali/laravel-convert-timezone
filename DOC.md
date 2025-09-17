@@ -19,7 +19,7 @@ composer require brainlet-ali/laravel-convert-timezone
 Publish the configuration file:
 
 ```bash
-php artisan vendor:publish --provider="Brainlet\LaravelConvertTimezone\LaravelConvertTimezoneServiceProvider" --tag="tz-config"
+php artisan vendor:publish --provider="Brainlet\LaravelConvertTimezone\TzServiceProvider" --tag="tz-config"
 ```
 
 ## Configuration
