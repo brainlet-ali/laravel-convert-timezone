@@ -3,22 +3,17 @@
 namespace Brainlet\LaravelConvertTimezone\Traits;
 
 use Brainlet\LaravelConvertTimezone\Actions\ConvertTimezoneAction;
-use Brainlet\LaravelConvertTimezone\Actions\GetDateTimeAttributesAction;
-use Brainlet\LaravelConvertTimezone\Exceptions\InvalidTimezone;
 use Carbon\Carbon;
-use Exception;
 
 /**
  * Trait ConvertTZ - Automatically converts datetime attributes to configured timezone
- *
- * @property array $dateTimeAttributes The attributes that should be converted to the configured timezone
  */
 trait ConvertTZ
 {
     use TimezoneScopes;
 
     /**
-     * The attributes of a model that should be converted to the configured timezone.
+     * Cached datetime attributes for this model instance.
      *
      * @var array<string>
      */
@@ -26,8 +21,6 @@ trait ConvertTZ
 
     /**
      * Override the parent's boot method so that we can register our event listener.
-     *
-     * @throws Exception
      */
     public static function bootConvertTZ(): void
     {
@@ -44,7 +37,7 @@ trait ConvertTZ
         $this->dateTimeAttributes = $this->getDateTimeAttributes();
 
         foreach ($this->attributes as $key => $value) {
-            if ($this->shouldConvertAttribute($key)) {
+            if ($this->shouldConvertAttribute($key, $value)) {
                 $this->attributes[$key] = $this->convertToTimezone($value);
             }
         }
@@ -53,37 +46,59 @@ trait ConvertTZ
     /**
      * Check if an attribute should be converted.
      */
-    protected function shouldConvertAttribute(string $key): bool
+    protected function shouldConvertAttribute(string $key, $value): bool
     {
-        return $this->isTzAttribute($key) && ! $this->hasGetMutator($key);
+        // Skip if it has custom accessor
+        if ($this->hasGetMutator($key)) {
+            return false;
+        }
+
+        // Skip null values
+        if ($value === null) {
+            return false;
+        }
+
+        // Convert if already Carbon (definitely a datetime)
+        if ($value instanceof Carbon) {
+            return true;
+        }
+
+        // Convert if Laravel knows it's a date field
+        return in_array($key, $this->dateTimeAttributes);
     }
 
     /**
      * Convert a value to the configured timezone.
-     *
-     * @throws InvalidTimezone
      */
-    protected function convertToTimezone($value): Carbon
+    protected function convertToTimezone($value): ?Carbon
     {
         return (new ConvertTimezoneAction)->execute($value, $this->getTz());
     }
 
     /**
-     * Check if a key is a datetime attribute.
-     */
-    protected function isTzAttribute(string $key): bool
-    {
-        return in_array($key, $this->dateTimeAttributes);
-    }
-
-    /**
      * Get all datetime attributes of the model.
+     * Uses Laravel's built-in date detection - no database queries!
      *
-     * @return array<string> List of datetime column names
+     * @return array<string>
      */
     protected function getDateTimeAttributes(): array
     {
-        return (new GetDateTimeAttributesAction)->execute($this);
+        // Use cached value if available
+        if (!empty($this->dateTimeAttributes)) {
+            return $this->dateTimeAttributes;
+        }
+
+        // Get dates from model configuration
+        $dates = $this->getDates();
+
+        // Add any fields cast as date/datetime
+        foreach ($this->getCasts() as $key => $type) {
+            if (str_contains($type, 'date') || str_contains($type, 'time')) {
+                $dates[] = $key;
+            }
+        }
+
+        return array_unique($dates);
     }
 
     /**
@@ -101,8 +116,13 @@ trait ConvertTZ
     {
         $attributes = parent::toArray();
 
-        foreach ($this->getDateTimeAttributes() as $key) {
-            if ($this->shouldConvertAttribute($key)) {
+        // Use cached datetime attributes
+        if (empty($this->dateTimeAttributes)) {
+            $this->dateTimeAttributes = $this->getDateTimeAttributes();
+        }
+
+        foreach ($this->dateTimeAttributes as $key) {
+            if (isset($attributes[$key]) && $attributes[$key] !== null && !$this->hasGetMutator($key)) {
                 $attributes[$key] = $this->convertToTimezone($attributes[$key])->toIso8601String();
             }
         }

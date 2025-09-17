@@ -14,15 +14,28 @@ class ConvertTimezoneAction
      *
      * @throws InvalidTimezone
      */
-    public function execute($value, string $timezone): Carbon
+    public function execute($value, string $timezone): ?Carbon
     {
+        // Return null if value is null
+        if ($value === null) {
+            return null;
+        }
+
+        // Validate timezone first
         try {
-            $carbon = new Carbon($value);
             $carbonTimezone = new CarbonTimeZone($timezone);
-            
-            return $carbon->setTimezone($carbonTimezone);
         } catch (Exception $e) {
             throw InvalidTimezone::make($timezone);
         }
+
+        // If already Carbon, just change timezone
+        if ($value instanceof Carbon) {
+            return $value->setTimezone($carbonTimezone);
+        }
+
+        // Otherwise create Carbon instance and set timezone
+        // Let Carbon's exceptions bubble up for invalid date formats
+        $carbon = new Carbon($value);
+        return $carbon->setTimezone($carbonTimezone);
     }
 }
