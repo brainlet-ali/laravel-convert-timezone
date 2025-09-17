@@ -84,7 +84,7 @@ trait ConvertTZ
     protected function getDateTimeAttributes(): array
     {
         // Use cached value if available
-        if (!empty($this->dateTimeAttributes)) {
+        if (! empty($this->dateTimeAttributes)) {
             return $this->dateTimeAttributes;
         }
 
@@ -122,7 +122,7 @@ trait ConvertTZ
         }
 
         foreach ($this->dateTimeAttributes as $key) {
-            if (isset($attributes[$key]) && $attributes[$key] !== null && !$this->hasGetMutator($key)) {
+            if (isset($attributes[$key]) && ! $this->hasGetMutator($key)) {
                 $attributes[$key] = $this->convertToTimezone($attributes[$key])->toIso8601String();
             }
         }
